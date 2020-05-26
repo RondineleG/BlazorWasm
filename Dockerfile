@@ -1,10 +1,14 @@
-FROM gitpod/workspace-full:latest
+FROM debian:10
 
 USER root
     
-RUN wget -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg && \
-    mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ && \
-    wget https://packages.microsoft.com/config/debian/10/prod.list && \
-    mv prod.list /etc/apt/sources.list.d/microsoft-prod.list && \
-    chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg && \
-    chown root:root /etc/apt/sources.list.d/microsoft-prod.list
+# define o mantenedor da imagem
+LABEL maintainer="Rondinele"
+# Atualiza a imagem com os pacotes
+RUN apt-get update && apt-get upgrade -y
+# Instala o NGINX para testar
+RUN apt-get install nginx -y
+# Expoe a porta 80
+EXPOSE 80
+# Comando para iniciar o NGINX no Container
+CMD ["nginx", "-g", "daemon off;"]
