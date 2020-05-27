@@ -1,11 +1,22 @@
 ﻿@inherits LayoutComponentBase
-
-
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About Blazor</a>
-    </div>
-        <div class="content px-4">
+﻿
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-navbar border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand">Blazor Wasm</a>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
         @Body
-    </div>
+    </main>
 </div>
+
+<footer class="border-top footer text-muted bg-footer">
+    <div class="container">
+        &copy; 2020 - Blazor Wasm
+    </div>
+</footer>
+
+
