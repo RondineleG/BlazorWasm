@@ -1,0 +1,15 @@
+﻿@page "/reportError/{errorCode:int}/{errorDescription}"
+<h3>
+    The error with the @ErrorCode
+    code and @ErrorDescription description has been reported.  
+</h3>
+<p>
+    Click <a href="/BlazorWasm/">here</a> to navigate to the Home page.
+</p>
+@code
+{
+     [Parameter]
+    public int ErrorCode { get; set; }
+    [Parameter]
+    public string ErrorDescription { get; set; }
+}
