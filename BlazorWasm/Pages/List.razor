@@ -1,0 +1,105 @@
+﻿@page "/list"
+@inject HttpClient client
+@inject IJSRuntime js
+
+<div class="container">
+    <input type="checkbox" id="toggle">
+    <header>
+        <section>Blazor Wasm - Crud usando API</section>
+        <hr />
+        <label for="toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </label>
+    </header>
+     <header/>
+    <section class="main">
+        <section id="content">
+           <h3>Lista de Desenvolvedores</h3>
+<hr/>
+<small>Adicionar novo</small>
+<div class=" form-group">
+    <a class="btn btn-success" href="/BlazorWasm/create"><i class="oi oi-plus"></i></a>
+</div>
+<br />
+@if (developers == null)
+{
+    
+    <div class="loading">
+       <text>Carrengando.....</text> 
+        </div>
+        <link rel="stylesheet"
+              href="data:text/css,.loading%7Bfont-family%3A'Franklin%20Gothic%20Medium'%2C'Arial%20Narrow'%2CArial%2Csans-serif%3Bcolor%3A%2388a%3Bfont-size%3A18px%3Btext-align%3Acenter%3Bwidth%3A150px%3Bheight%3A150px%3Bposition%3Afixed%3Btop%3A0%3Bbottom%3A0%3Bleft%3A0%3Bright%3A0%3Bmargin%3Aauto%7D.loading%3A%3Aafter%7Bcontent%3A''%3Bborder%3Asolid%2010px%3Bborder-color%3A%23322153%20%23eee%20%23eee%3Bborder-radius%3A60px%3Bposition%3Aabsolute%3Bwidth%3A60px%3Bheight%3A60px%3Btop%3A0%3Bbottom%3A0%3Bleft%3A0%3Bright%3A0%3Bmargin%3Aauto%3Banimation%3Arotation%201.0s%20linear%200s%20infinite%7D%40keyframes%20rotation%7B0%25%7Btransform%3Arotate(45deg)%7D100%25%7Btransform%3Arotate(405deg)%7D%7D" />
+}
+else if (developers.Length == 0)
+{
+    <text>Sem dados cadastrado.</text>
+
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>Email</th>
+                <th>Experiência (Anos)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Developers dev in developers)
+            {
+                <tr>
+                    <td>@dev.Id</td>
+                    <td>@dev.FirstName</td>
+                    <td>@dev.LastName</td>
+                    <td>@dev.Email</td>
+                    <td>@dev.Experience</td>
+                    <td>
+                        <a class="btn btn-success" href="/BlazorWasm/edit/@dev.Id">Editar</a>
+                        <button class="btn btn-danger" @onclick="@(() => Delete(dev.Id))">Deletar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+        </section>
+        <section id="menu">
+            <navigation>
+               <a href="/BlazorWasm/create">Criar</a>
+                <a href="/BlazorWasm/list">Ver Todos</a>
+            </navigation>
+        </section>
+    </section>
+</div>
+
+@code {
+
+    Developers[] developers { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        developers = await client.GetFromJsonAsync<Developers[]>("https://reservasalaapi.herokuapp.com/api/developer");
+    }
+
+    async Task Delete(int developerId)
+    {
+        var dev = developers.First(x => x.Id == developerId);
+
+        if (await js.InvokeAsync<bool>("confirm", $"Certeza que deseja excluir {dev.FirstName}'s ({dev.Id})  ?"))
+        {
+            await client.DeleteAsync($"https://reservasalaapi.herokuapp.com/api/developer/{developerId}");
+            await OnInitializedAsync();
+        }
+
+    }
+
+}
+
+

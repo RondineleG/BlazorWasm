@@ -1,0 +1,42 @@
+﻿@page "/create"
+@inject HttpClient http
+@inject NavigationManager uriHelper
+
+<div class="container">
+    <input type="checkbox" id="toggle">
+    <header>
+        <section>Blazor Wasm - Crud usando API</section>
+        <hr />
+        <label for="toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </label>
+    </header>
+    <header/>
+    <section class="main">
+        <section id="content">
+            <h3>Criar</h3>
+<Form ButtonText="Novo Desenvolvedor" dev="@dev"
+      OnValidSubmit="@CreateDeveloper" />
+      <SuccessNotification @ref="_notification"/>
+        </section>
+        <section id="menu">
+            <navigation>
+                <a href="/BlazorWasm/list">Ver Todos</a>
+            </navigation>
+        </section>
+    </section>
+</div>
+
+@code {
+    Developers dev = new Developers();
+    private SuccessNotification _notification;
+
+    async Task CreateDeveloper()
+    {
+        await http.PostAsJsonAsync("https://reservasalaapi.herokuapp.com/api/developer", dev);
+         _notification.Show();
+        uriHelper.NavigateTo("/BlazorWasm/List");
+    }
+}

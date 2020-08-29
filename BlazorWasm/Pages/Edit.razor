@@ -1,0 +1,50 @@
+﻿@page "/edit/{developerId:int}"
+@inject HttpClient http
+@inject NavigationManager uriHelper
+@inject IJSRuntime js
+      
+<div class="container">
+    <input type="checkbox" id="toggle">
+    <header>
+        <section>Blazor Wasm - Crud usando API</section>
+        <hr />
+        <label for="toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </label>
+    </header>
+    <section class="main">
+        <section id="content">           
+<h3>Editar</h3>
+
+<Form ButtonText="Atualizar Dados" dev="dev"
+      OnValidSubmit="@EditDeveloper" ></Form>
+
+        </section>
+        <section id="menu">
+            <navigation>
+                <a href="/BlazorWasm/create">Criar</a>
+                <a href="/BlazorWasm/list">Ver Todos</a>
+            </navigation>
+        </section>
+    </section>
+</div>
+
+@code {
+    [Parameter] public int developerId { get; set; }
+    Developers dev = new Developers();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        dev = await http.GetFromJsonAsync<Developers>($"https://reservasalaapi.herokuapp.com/api/developer/{developerId}");
+    }
+
+    async Task EditDeveloper()
+    {
+        await http.PutAsJsonAsync("https://reservasalaapi.herokuapp.com/api/developer", dev);
+        await js.InvokeVoidAsync("alert", $"Updated Successfully!");
+        uriHelper.NavigateTo("/BlazorWasm/list");
+
+    }
+}
