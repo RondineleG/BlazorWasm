@@ -136,6 +136,13 @@ app {
     top: 0.5rem;
 }
 
+.customNotFound {
+    text-align: center;
+    color: red;
+    font-size: 35px;
+    box-shadow: 1px 1px 1px grey;
+}
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
