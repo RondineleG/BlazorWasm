@@ -1,3 +1,4 @@
 # BlazorWasm
-Teste BLazor Pages usando github actions
+Teste como páginas do BLazor usando ações do github.
 https://rondineleg.github.io/BlazorWasm/
+ 
