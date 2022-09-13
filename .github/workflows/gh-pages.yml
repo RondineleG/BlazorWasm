@@ -2,9 +2,9 @@ name: Deploy to Github Pages
 
 on:
    push:
-    branches: [ "Feat/ErroBranchDeploy" ]
+    branches: [ "main" ]
    pull_request:
-    branches: [ "Feat/ErroBranchDeploy" ]
+    branches: [ "main" ]
 
 jobs:
   build:
