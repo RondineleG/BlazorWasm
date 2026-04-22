@@ -2,10 +2,9 @@
 @inject HttpClient Http
 @inject NavigationManager Nav
 
-<div class="login-container">
-    <div class="login-box">
+<div class="auth-container">
+    <div class="auth-box">
         <h2>📝 Register</h2>
-        <p class="subtitle">Create your account</p>
 
         <form @onsubmit="HandleRegister">
             <div class="form-group">
@@ -36,7 +35,7 @@
             </button>
         </form>
 
-        <div class="register-link">
+        <div class="auth-link">
             Already have account? <a href="/login">Login</a>
         </div>
     </div>
@@ -88,8 +87,7 @@
             }
             else
             {
-                var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-                error = problem?.Detail ?? "Registration failed";
+                error = "Registration failed";
             }
         }
         catch (Exception ex)
@@ -101,6 +99,4 @@
             loading = false;
         }
     }
-
-    record ProblemDetails(string Type, string Title, int Status, string Detail);
 }

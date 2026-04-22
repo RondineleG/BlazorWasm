@@ -1,0 +1,71 @@
+@page "/"
+@inject NavigationManager Nav
+
+<div class="home-container">
+    <div class="home-box">
+        <h1>🖥️ MrBur Terminal</h1>
+        <p>SSH Web Terminal</p>
+
+        <div class="actions">
+            <a href="/login" class="btn btn-primary">Login</a>
+            <a href="/register" class="btn btn-secondary">Register</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.home-box {
+    text-align: center;
+    padding: 3rem;
+}
+
+.home-box h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.home-box p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn {
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+}
+
+.btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    border-color: var(--accent);
+}
+</style>

@@ -1,11 +1,11 @@
 @page "/login"
 @inject HttpClient Http
 @inject NavigationManager Nav
+@inject IJSRuntime JS
 
-<div class="login-container">
-    <div class="login-box">
-        <h2>🔐 MrBur Terminal</h2>
-        <p class="subtitle">SSH Web Terminal</p>
+<div class="auth-container">
+    <div class="auth-box">
+        <h2>🔐 Login</h2>
 
         <form @onsubmit="HandleLogin">
             <div class="form-group">
@@ -27,7 +27,7 @@
             </button>
         </form>
 
-        <div class="register-link">
+        <div class="auth-link">
             Don't have account? <a href="/register">Register</a>
         </div>
     </div>
@@ -38,8 +38,6 @@
     private string password = "";
     private string error = "";
     private bool loading = false;
-
-    [Inject] private IJSRuntime JS { get; set; } = default!;
 
     private async Task HandleLogin()
     {
