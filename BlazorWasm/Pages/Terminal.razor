@@ -1,0 +1,45 @@
+@page "/terminal"
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+
+<div class="terminal-page">
+    <div class="terminal-header">
+        <span class="title">🖥️ MrBur Terminal</span>
+        <div class="actions">
+            <span class="user">@username</span>
+            <button @onclick="Logout">Logout</button>
+        </div>
+    </div>
+
+    <div class="terminal-container">
+        <div id="terminal"></div>
+    </div>
+</div>
+
+@code {
+    private string username = "";
+    private string token = "";
+    private bool connected = false;
+    private string statusMessage = "Connecting...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        token = await JS.InvokeAsync<string>("localStorage.getItem", "token");
+        username = await JS.InvokeAsync<string>("localStorage.getItem", "username");
+
+        if (string.IsNullOrEmpty(token))
+        {
+            Nav.NavigateTo("/login");
+            return;
+        }
+
+        await JS.InvokeVoidAsync("initTerminal", token);
+    }
+
+    private async Task Logout()
+    {
+        await JS.InvokeVoidAsync("localStorage.removeItem", "token");
+        await JS.InvokeVoidAsync("localStorage.removeItem", "username");
+        Nav.NavigateTo("/login");
+    }
+}

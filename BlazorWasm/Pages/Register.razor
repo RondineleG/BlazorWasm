@@ -1,0 +1,106 @@
+@page "/register"
+@inject HttpClient Http
+@inject NavigationManager Nav
+
+<div class="login-container">
+    <div class="login-box">
+        <h2>📝 Register</h2>
+        <p class="subtitle">Create your account</p>
+
+        <form @onsubmit="HandleRegister">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" @bind="username" placeholder="Choose username" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" @bind="password" placeholder="Choose password (min 6 chars)" />
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" @bind="confirmPassword" placeholder="Confirm password" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="error">@error</div>
+            }
+
+            @if (!string.IsNullOrEmpty(success))
+            {
+                <div class="success">@success</div>
+            }
+
+            <button type="submit" disabled="@loading">
+                @(loading ? "Creating..." : "Register")
+            </button>
+        </form>
+
+        <div class="register-link">
+            Already have account? <a href="/login">Login</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string confirmPassword = "";
+    private string error = "";
+    private string success = "";
+    private bool loading = false;
+
+    private async Task HandleRegister()
+    {
+        error = "";
+        success = "";
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+        {
+            error = "Please fill all fields";
+            return;
+        }
+
+        if (password != confirmPassword)
+        {
+            error = "Passwords do not match";
+            return;
+        }
+
+        if (password.Length < 6)
+        {
+            error = "Password must be at least 6 characters";
+            return;
+        }
+
+        loading = true;
+
+        try
+        {
+            var response = await Http.PostAsJsonAsync("http://172.245.152.43:1408/api/auth/register",
+                new { Username = username, Password = password });
+
+            if (response.IsSuccessStatusCode)
+            {
+                success = "Account created! Redirecting to login...";
+                await Task.Delay(1500);
+                Nav.NavigateTo("/login");
+            }
+            else
+            {
+                var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+                error = problem?.Detail ?? "Registration failed";
+            }
+        }
+        catch (Exception ex)
+        {
+            error = $"Connection error: {ex.Message}";
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    record ProblemDetails(string Type, string Title, int Status, string Detail);
+}

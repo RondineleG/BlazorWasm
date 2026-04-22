@@ -1,0 +1,43 @@
+name: Build and Push Terminal API
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'BlazorTerminal.Api/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore and Build
+      run: |
+        cd BlazorTerminal.Api
+        dotnet restore
+        dotnet publish -c Release -o ../publish
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./publish
+        dockerfile: ./publish/Dockerfile
+        push: true
+        tags: ghcr.io/rondineleg/mrbur-terminal:latest
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
