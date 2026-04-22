@@ -29,7 +29,7 @@
 
         if (string.IsNullOrEmpty(token))
         {
-            Nav.NavigateTo("/login");
+            Nav.NavigateTo("login");
             return;
         }
 
@@ -40,6 +40,6 @@
     {
         await JS.InvokeVoidAsync("localStorage.removeItem", "token");
         await JS.InvokeVoidAsync("localStorage.removeItem", "username");
-        Nav.NavigateTo("/login");
+        Nav.NavigateTo("login");
     }
 }

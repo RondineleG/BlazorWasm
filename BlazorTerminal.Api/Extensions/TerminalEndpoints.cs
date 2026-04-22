@@ -1,9 +1,7 @@
 using System.Net.WebSockets;
 using System.Security.Claims;
-using System.Text;
 using BlazorTerminal.Api.Services;
 using BlazorTerminal.Api.Terminal;
-using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorTerminal.Api.Extensions;
 
@@ -21,7 +19,7 @@ public class TerminalEndpoints : IEndpointGroup
         HttpContext context,
         WebSocket webSocket,
         ClaimsPrincipal user,
-        [FromServices] TerminalWsHandler handler,
+        TerminalWsHandler handler,
         CancellationToken ct)
     {
         await handler.HandleAsync(webSocket, user, ct);

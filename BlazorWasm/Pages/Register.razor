@@ -36,7 +36,7 @@
         </form>
 
         <div class="auth-link">
-            Already have account? <a href="/login">Login</a>
+            Already have account? <a href="login">Login</a>
         </div>
     </div>
 </div>
@@ -83,7 +83,7 @@
             {
                 success = "Account created! Redirecting to login...";
                 await Task.Delay(1500);
-                Nav.NavigateTo("/login");
+                Nav.NavigateTo("login");
             }
             else
             {

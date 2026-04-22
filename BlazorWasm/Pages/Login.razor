@@ -28,7 +28,7 @@
         </form>
 
         <div class="auth-link">
-            Don't have account? <a href="/register">Register</a>
+            Don't have account? <a href="register">Register</a>
         </div>
     </div>
 </div>
@@ -62,7 +62,7 @@
                 {
                     await JS.InvokeVoidAsync("localStorage.setItem", "token", result.Token);
                     await JS.InvokeVoidAsync("localStorage.setItem", "username", result.Username);
-                    Nav.NavigateTo("/terminal");
+                    Nav.NavigateTo("terminal");
                 }
             }
             else
