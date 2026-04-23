@@ -2,6 +2,7 @@ using System.Net.WebSockets;
 using System.Security.Claims;
 using BlazorTerminal.Api.Services;
 using BlazorTerminal.Api.Terminal;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorTerminal.Api.Extensions;
 
@@ -17,11 +18,17 @@ public class TerminalEndpoints : IEndpointGroup
 
     private async Task HandleTerminal(
         HttpContext context,
-        WebSocket webSocket,
         ClaimsPrincipal user,
-        TerminalWsHandler handler,
         CancellationToken ct)
     {
+        if (!context.WebSockets.IsWebSocketRequest)
+        {
+            context.Response.StatusCode = 400;
+            return;
+        }
+
+        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        var handler = context.RequestServices.GetRequiredService<TerminalWsHandler>();
         await handler.HandleAsync(webSocket, user, ct);
     }
 }

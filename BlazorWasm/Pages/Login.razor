@@ -52,7 +52,7 @@
 
         try
         {
-            var response = await Http.PostAsJsonAsync("http://172.245.152.43:1408/api/auth/login",
+            var response = await Http.PostAsJsonAsync("https://visiting-directors-identifying-strength.trycloudflare.com/api/auth/login",
                 new { Username = username, Password = password });
 
             if (response.IsSuccessStatusCode)
