@@ -29,7 +29,7 @@
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const host = window.location.hostname;
         const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80');
-        const wsUrl = `ws://${window.location.hostname}:1408/ws/terminal?token=${token}`;
+        const wsUrl = `wss://visiting-directors-identifying-strength.trycloudflare.com/ws/terminal?token=${token}`;
 
         ws = new WebSocket(wsUrl);
 
